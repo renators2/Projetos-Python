@@ -1,0 +1,35 @@
+def relatorio_atletas():
+    def verificar_empates(atletas): #nome da função
+        tempos=[tempo for _, tempo in atletas] #criamos uma nova lista "tempos" - criamos uma função que verifica apenas o tempo dentro da lista de atlestas
+        empates=[]#lista vazia
+        for atleta in atletas: #loop que verifica os atletas
+            if tempos.count(atleta[1])>1: #verifica se o tempo do atleta atual aparece mais de uma vez na lista, se sim, teremos um empate
+                empates.append(atleta)#se houver vai para nova lista
+        return empates if empates else None #se não houver retorna none
+    atletas=[] #variavel para armazenar o nome e tempo de cada atleta
+    for i in range(3): #Aqui ira dar um loop dentro de quantos usuarios desejar (basta alterar o valor dentro do parenteses)
+        nome=input("Nome do competidor {}: ".format(i+1))
+        tempo=float(input("Tempo do competidor {}: ".format(i+1)))
+        atletas.append((nome,tempo)) #apos receber isso a tupla é adicionada a lista nadadores. Cada elemento da lista sera uma tupla com nom e tempo de um competidor
+    #melhor tempo
+    melhor_tempo=min(atletas, key=lambda x:x[1])
+    #pior tempo
+    pior_desempenho=max(atletas, key=lambda x:x[1])
+    #tempo medio
+    tempo_total=sum(tempo for _, tempo in atletas)
+    tempo_medio=tempo_total/len(atletas)
+    #verificador de empate
+    empates = verificar_empates(atletas)
+    #função que faz a verificação
+
+            
+    print("a. Atleta com o melhor tempo:", melhor_tempo[0], " - ", melhor_tempo[1], "segundos")
+    print("b. Atleta com o pior tempo:", pior_desempenho[0], " - ", pior_desempenho[1], "segundos")
+    print("c. Tempo médio dos atletas nessa modalidade:", tempo_medio, "segundos")
+    if empates:
+        print("d. Empates: ")
+        for atleta in empates:
+            print(atleta[0], "-", atleta[1], "segundos")
+
+#chama a função
+relatorio_atletas()
