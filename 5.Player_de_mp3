@@ -1,0 +1,16 @@
+#REPRODUZINDO AUDIO EM MP3 NO PYTHON
+pip install pygame
+
+import pygame
+
+def tocar_musica(caminho_musica):
+    pygame.mixer.init()
+    pygame.mixer.music.load(caminho_musica)
+    pygame.mixer.music.play()
+    input()
+
+caminho_musica = r"C:\Users\renat\Downloads\python.temas\musicas\ex021.mp3" #diretório no seu computador com todas as musicas
+tocar_musica(caminho_musica)
+
+# Mantenha o programa em execução para reproduzir a música
+input("Pressione Enter para encerrar...")
