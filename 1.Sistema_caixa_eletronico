@@ -1,0 +1,79 @@
+import getpass
+
+#criaremos uma classe com varias funções dentro para executarem seu respectivo comando
+class CaixaEletronico:
+    def __init__(self):
+        self.usuarios={} #Esta parte será responsavel por armazenar os novos usuarios
+
+    def cadastrar_usuario(self):
+        nome=input("Digite o seu nome: ")
+        senha=getpass.getpass("Digite a sua senha: ")
+        self.usuarios[nome]=senha #aqui nesta parte é salvo dentro de uma variavel usuario. nome é a chave e senha estará associado a ela ""[nome]=senha"
+        print("Usuário cadastrado com sucesso!\n")
+
+    def logar_sistema(self):
+        tentativas=3 #definimos o numero de tentativas
+        while tentativas > 0: #enquanto for maior do que 0 faça isso:
+            nome=input("Digite o seu nome: ")
+            senha=getpass.getpass("Digite a sua senha: ")
+            if nome in self.usuarios and self.usuarios[nome]==senha: #verificamos se o nome de usuario esta presente na lista de usuairos e a senha esta correta
+                print("Login bem-sucedido! Bem-vindo(a), {}" .format(nome))
+                return True #indica como positivo para retornar ao sistema como verdadeiro
+            else:
+                tentativas -=1 #Se o login não for bem sucedido, vamos remover 1 de (tentativas)
+                if tentativas > 0: #se ainda tiver tentativas restantes irá mostrar aqui e a mensagem de erros
+                    print("Usuário ou senha incorretos. Tente novamente! Restam {}".format(tentativas))
+                else: #Esta implicito, mas quer dizer se o numero chegar a zero então...
+                    print("""BLOQUEADO! Infelizmente você excedeu o número máximo de tentativas! 
+                    tente novamente depois de 24 horas""")
+                    return False
+    
+#verificador de notas que ira dar o numero de celulas disponiveis de acordo com o saqui                    
+def caixa_eletronico(saque):
+    #limite maximo de 2000 de cédulas no caixa eletrônico
+    if 10<=saque<=2000: #verifica se aque é maior ou =10 e se é menor ou igual a 1420 (se esta entre 10 até 1420). Verifica se esta dentro do intervalo valido
+        notas=[200,100,50,20,10,5,2] #aqui mostra as notas que tenho
+        resultado={} #dicionario vazio
+        for nota in notas: #da um loop sobre cada valor de nota na lista de notas disponiveis
+            quantidade_de_notas=saque//nota #determina o valor necessário para o saque, com uma divisão inteira, descartando a parte decimal do resultado
+            if quantidade_de_notas>0: #verifica se a quantidade de notas caluladas é meior que 0, se sim, significa que é preciso dela para o saqui
+                resultado[nota]=quantidade_de_notas# adicionamos a resultado a quantidade de notas nessarias para o valor atual da nota
+                saque%=nota #atualizamos o valor do saque subitraindo o valor total das notas ja calculadas.
+                #acima calculamos o resto da divisão entre sque e nota, o valor restante após a retirada das notas ja contabilizadas
+        return resultado #aqui voltamos ja com q quantidade de cada nota necessária para o sque
+    else: #se não estiver o valor a ser sacado, dentro do indicado, retornaremos com NOne, não pode ser processado
+        return None
+
+def main():
+    caixa=CaixaEletronico() #criando uma istancia de classe caixa que se refere a caixaeletronico onde ira ter acesso a todos os seus atributos acima
+    while True: #loop infinito ate ser clicado em sair
+        print("""
+        =============== MENU ===============
+        -------- BANCO SAQUE RAPIDO --------
+        1 - Cadastro
+        2 - Login/Saque
+        3 - Sair
+        """)
+        opcao=input("Escolha uma opção: ")
+
+        if opcao == "1": #se digitar 1 ele deve seguir as instruções ja definidas acima referente a classe caixaeletronico la em cima
+            caixa.cadastrar_usuario()#a função que ele vai fazer
+        elif opcao == "2":
+            if caixa.logar_sistema():#verificado se logar sistema esta ok ele vai para o campo abaixo
+                exemplo1=float(input("Digite o valor que deseja sacar = R$").replace(",","."))
+                resultado=caixa_eletronico(exemplo1)#chama a função que vai calular o numero de cedulas conforme digitado em exemplo1
+                if resultado is not None:#para verificar se deu tudo certo! se não deu problema= is not None
+                    print("Para sacar a quantidade de R${}, o programa fornecerá:".format(exemplo1))
+                    for nota, quantidade in resultado.items():#aqui faz um loop em todos os itens de resultado que é o def de verificação das notas criado acima
+                        #items() retornará uma lista de tuplas, onde conterá a chave e o valor do dicionario, a chave será o valor das notas e os valores representaram a quantidade de notas necessarias ao saque
+                        print("{} notas de R$ {:.2f}".format(quantidade, nota))
+                else:
+                    print("Valor do saque é inválido. O valor deve estar entre R$ 10,00 até R$ 2000,00")
+        elif opcao == "3":
+            print("saindo do sistema. Até logo!")
+            break
+        else:
+            print("Opção inválida. Tente novamente. \n")
+            
+if __name__ == "__main__":
+    main()
