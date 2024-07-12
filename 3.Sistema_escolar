@@ -1,0 +1,46 @@
+def calcular_media(nota1, nota2):
+    return (nota1+nota2)/2
+
+def verificar_situacao(media): #criamos uma def para vrificar a situação do aluno
+    if media<2:
+        return "Reprovado."
+    elif media >= 2 and media < 6:
+        return "Prova Final."
+    else:
+        return "Aprovado!"
+
+def main():
+    alunos=[]
+    for i in range(5):
+        nome=input("Digite o nome do {} aluno: ".format(i+1))
+        nota1=float(input("Digite a primea nota do aluno {}: ".format(i+1)))
+        nota2=float(input("Digite a primea nota do aluno {}: ".format(i+1)))
+        media=calcular_media(nota1, nota2) #remete a função acima
+        situacao=verificar_situacao(media) #remete a função acima
+        alunos.append((nome,media,situacao)) #2x parenteses porque esta criando uma tupla
+
+    aprovados=sum(1 for _, _, situacao in alunos if situacao == "Aprovado!") #aqui eu vou usar o "_" 2x para negar (nome, media) após isso eu verifico a situação dos alunos em alunos que sejam como "Aprovado!"
+    prova_final=sum(1 for _, _, situacao in alunos if situacao == "Prova Final.") #repete a mesma coisa do comentario acima
+    reprovados=sum(1 for _, _, situacao in alunos if situacao == "Reprovado.")
+
+    total_alunos=len(alunos) #estou verificando o total
+    percentual_prova_final=(prova_final/total_alunos)*100 
+    
+    percentual_aprovados=(aprovados/total_alunos)*100
+    percentual_reprovados=(reprovados/total_alunos)*100
+
+    print("\nRelatório:")
+    print("------------")
+    for nome, media, situacao in alunos: #inicia um loop verificando nome, media e situacao em alunos
+        print("Aluno: {}, Média: {:.2f}, Situação: {}".format(nome,media,situacao))
+    print("------------")
+    print("Percentual de alunos em Prova Final: {:.2f}%".format(percentual_prova_final))
+    print("Percentual de alunos em Aprovados: {:.2f}%".format(percentual_aprovados))
+    print("Percentual de alunos em Reprovados: {:.2f}%".format(percentual_reprovados))
+    print("------------")
+    print("Total de Aprovados: ", aprovados)
+    print("Total de Alunos em Prova Final: ", prova_final)
+    print("Total de Reprovados: ", reprovados)
+
+if __name__=="__main__":
+    main()
